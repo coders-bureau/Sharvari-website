@@ -39,7 +39,7 @@ const Navbar = () => {
     return (
         <nav className="bg-white shadow-md sticky top-0 z-50 font-sans transition-all duration-300">
             {/* Top Bar - Collapsible */}
-            <div className={`bg-gray-50 border-b border-gray-100 flex items-center justify-center px-4 overflow-hidden transition-all duration-300 ease-in-out ${showTopBar ? "h-10 opacity-100" : "h-0 opacity-0"}`}>
+            <div className={`bg-gray-50 border-b border-gray-100 hidden md:flex items-center justify-center px-4 overflow-hidden transition-all duration-300 ease-in-out ${showTopBar ? "h-10 opacity-100" : "h-0 opacity-0"}`}>
                 <div className="max-w-7xl w-full mx-auto flex justify-between items-center text-xs text-gray-500">
                     <div className="flex items-center gap-6">
                         <div className="flex items-center gap-1">
@@ -67,14 +67,14 @@ const Navbar = () => {
 
             {/* Main Navbar */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex items-center h-24">
+                <div className="flex items-center h-16 md:h-24">
                     {/* Logo */}
                     <div className="flex-shrink-0 flex items-center">
-                        <Link to="/" className="flex items-center gap-3">
-                            <img src={logo} alt="Sharvari Logo" className="h-14 w-auto" />
+                        <Link to="/" className="flex items-center gap-2 md:gap-3">
+                            <img src={logo} alt="Sharvari Logo" className="h-10 md:h-14 w-auto" />
                             <div className="flex flex-col items-center">
-                                <span className="text-2xl font-bold text-primary-700 tracking-widest leading-none">SHARVARI ELECTRICALS</span>
-                                <span className="text-[0.6rem] font-bold text-[#5A2283] tracking-[0.3em] uppercase mt-0.5">EPC COMPANY</span>
+                                <span className="text-lg md:text-2xl font-bold text-primary-700 tracking-widest leading-none">SHARVARI ELECTRICALS</span>
+                                <span className="text-[0.5rem] md:text-[0.6rem] font-bold text-[#5A2283] tracking-[0.3em] uppercase mt-0.5">EPC COMPANY</span>
                             </div>
                         </Link>
                     </div>
@@ -128,6 +128,29 @@ const Navbar = () => {
                                 {link.name}
                             </Link>
                         ))}
+                    </div>
+                    {/* Contact Info in Mobile Menu */}
+                    <div className="px-5 py-4 border-t border-gray-100 bg-gray-50 space-y-3">
+                        <div className="flex items-center gap-3 text-sm text-gray-600">
+                            <MapPin size={16} className="text-primary-600" />
+                            <span>Maharashtra, India</span>
+                        </div>
+                        {settings.email && (
+                            <div className="flex items-center gap-3 text-sm text-gray-600">
+                                <Mail size={16} className="text-primary-600" />
+                                <a href={`mailto:${settings.email}`} className="hover:text-primary-600 transition-colors">
+                                    {settings.email}
+                                </a>
+                            </div>
+                        )}
+                        {settings.phone && (
+                            <div className="flex items-center gap-3 text-sm text-gray-600">
+                                <Phone size={16} className="text-primary-600" />
+                                <a href={`tel:${settings.phone}`} className="hover:text-primary-600 transition-colors">
+                                    {settings.phone}
+                                </a>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
