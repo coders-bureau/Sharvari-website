@@ -7,6 +7,7 @@ import HeroSlideManager from "../components/admin/HeroSlideManager";
 import { LogOut, LayoutDashboard, FileText, Plus, Settings, Trash2, Home, Users, Briefcase, Folder, MessageSquare, Building, Eye, X, Image as ImageIcon } from "lucide-react";
 import toast from "react-hot-toast";
 import { useSiteSettings } from "../context/SiteSettingsContext";
+import logo from "../assets/logo.png";
 
 const PAGES = [
     { id: "home", name: "Home", icon: <Home size={20} /> },
@@ -239,7 +240,7 @@ const AdminDashboard = () => {
             {/* Sidebar */}
             <div className="w-64 bg-white shadow-md flex flex-col">
                 <div className="p-6 border-b flex items-center justify-center">
-                    <img src="/src/assets/logo.png" alt="Sharvari Logo" className="h-12 object-contain" />
+                    <img src={logo} alt="Sharvari Logo" className="h-12 object-contain" />
                 </div>
                 <div className="border-b px-6 py-2 text-center">
                     <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider">Admin Panel</p>
