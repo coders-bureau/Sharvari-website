@@ -21,7 +21,7 @@ const Contact = () => {
     if (error && error !== "Document not found") return <div className="text-center text-red-500 mt-10">Error: {error}</div>;
 
     const defaultData = {
-        title: "Contact SHARVARI ELECTRICALS",
+        title: "Contact SHARVARI ELECTRICAL PVT. LTD.",
         heroText: "Get in touch with us for your EPC project requirements.",
         sections: []
     };
@@ -162,7 +162,7 @@ const MapSection = () => {
                         style={{ border: 0 }}
                         allowFullScreen=""
                         loading="lazy"
-                        title="Sharvari Electricals Location"
+                        title="Sharvari Electrical Pvt. Ltd. Location"
                         className={`w-full h-full transition-opacity duration-700 ${mapLoaded ? 'opacity-100 grayscale-[20%] hover:grayscale-0' : 'opacity-0'}`}
                         onLoad={() => setMapLoaded(true)}
                     ></iframe>

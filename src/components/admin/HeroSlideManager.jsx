@@ -80,7 +80,7 @@ const HeroSlideManager = ({ pageData, setPageData, activePage }) => {
                                     <input
                                         type="text"
                                         className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-primary-500 font-bold text-gray-800"
-                                        placeholder="e.g. Sharvari Electricals"
+                                        placeholder="e.g. Sharvari Electrical Pvt. Ltd."
                                         value={slide.title || ""}
                                         onChange={(e) => {
                                             const newSlides = [...slides];

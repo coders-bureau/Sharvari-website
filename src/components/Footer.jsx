@@ -12,12 +12,12 @@ const Footer = () => {
                         <div className="flex items-center space-x-2 mb-4">
                             <img src={logo} alt="Sharvari Logo" className="h-10 w-auto bg-white rounded p-0.5" />
                             <div>
-                                <h3 className="text-lg font-bold leading-none">SHARVARI ELECTRICALS</h3>
+                                <h3 className="text-lg font-bold leading-none">SHARVARI ELECTRICAL PVT. LTD.</h3>
                                 <p className="text-xs text-gray-400 font-semibold tracking-wider">EPC COMPANY</p>
                             </div>
                         </div>
                         <p className="text-gray-400">
-                            Sharvari Electricals is a trusted EPC company delivering reliable power infrastructure solutions including transmission lines, substations, electrification projects, and energy services. We are committed to quality, safety, and timely project execution.
+                            Sharvari Electrical Pvt. Ltd. is a trusted EPC company delivering reliable power infrastructure solutions including transmission lines, substations, electrification projects, and energy services. We are committed to quality, safety, and timely project execution.
                         </p>
                     </div>
                     <div>
@@ -41,7 +41,7 @@ const Footer = () => {
                     </div>
                 </div>
                 <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500">
-                    &copy; {new Date().getFullYear()} Sharvari Electrical. All rights reserved.
+                    &copy; {new Date().getFullYear()} Sharvari Electrical Pvt. Ltd. All rights reserved.
                 </div>
             </div>
         </footer>

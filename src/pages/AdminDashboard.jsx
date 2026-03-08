@@ -144,7 +144,7 @@ const AdminDashboard = () => {
             if (pageId === "about") {
                 const currentSections = data?.sections || [];
                 const requiredHeadings = [
-                    "About Sharvari Electricals",
+                    "About Sharvari Electrical Pvt. Ltd.",
                     "Our Infrastructure",
                     "Our Vision",
                     "Our Mission",
@@ -154,8 +154,8 @@ const AdminDashboard = () => {
                 const missingSections = [];
                 if (!currentSections.find(s => s.heading.includes("About Sharvari"))) {
                     missingSections.push({
-                        heading: "About Sharvari Electricals",
-                        content: "Sharvari Electricals is a premier EPC company...",
+                        heading: "About Sharvari Electrical Pvt. Ltd.",
+                        content: "Sharvari Electrical Pvt. Ltd. is a premier EPC company...",
                         image: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200"
                     });
                 }
@@ -363,10 +363,10 @@ const AdminDashboard = () => {
                                             </div>
 
                                             {(activePage === "home" || pageData.showHero !== false) && (
-                                                <HeroSlideManager 
-                                                    pageData={pageData} 
-                                                    setPageData={setPageData} 
-                                                    activePage={activePage} 
+                                                <HeroSlideManager
+                                                    pageData={pageData}
+                                                    setPageData={setPageData}
+                                                    activePage={activePage}
                                                 />
                                             )}
                                         </div>
@@ -793,8 +793,8 @@ const AdminDashboard = () => {
 
                                             {/* 2. About Section Image */}
                                             <div className="bg-gray-50 p-4 rounded border border-gray-200">
-                                                <h4 className="font-semibold text-gray-700 mb-2">2. About Sharvari Electricals - Main Image</h4>
-                                                <p className="text-xs text-gray-500 mb-4">Displayed in the "About Sharvari Electricals" section.</p>
+                                                <h4 className="font-semibold text-gray-700 mb-2">2. About Sharvari Electrical Pvt. Ltd. - Main Image</h4>
+                                                <p className="text-xs text-gray-500 mb-4">Displayed in the "About Sharvari Electrical Pvt. Ltd." section.</p>
                                                 <ImageUploader
                                                     folderPath="uploads/about"
                                                     currentImageUrl={pageData.aboutImage}

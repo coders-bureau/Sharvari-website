@@ -22,7 +22,7 @@ const About = () => {
     if (error && error !== "Document not found") return <div className="text-center text-red-500 mt-10">Error: {error}</div>;
 
     const defaultData = {
-        title: "About SHARVARI ELECTRICALS",
+        title: "About SHARVARI ELECTRICAL PVT. LTD.",
         heroText: "Leading EPC Company delivering excellence in electrical engineering projects.",
         sections: [],
         teamMembers: []
@@ -31,12 +31,12 @@ const About = () => {
     const displayData = data || defaultData;
     const showHero = displayData.showHero !== false;
 
-    // 1. About Sharvari Electricals
+    // 1. About Sharvari Electrical Pvt. Ltd.
     const aboutSection = {
-        heading: "About Sharvari Electricals",
+        heading: "About Sharvari Electrical Pvt. Ltd.",
         content: `
-            <p class="mb-4">We, <strong>Sharvari Electricals</strong> have great pleasure to introduce ourselves as an Established & Reputed Electrical Engineering organization in field of Supply, Erection, Testing & Commissioning of Turnkey Electricals Projects. We started our business in the field of EHV Electrical Transmission sector in 2009.</p>
-            <p>Sharvari Electricals is a firm founded & managed by young, well qualified & experienced engineers. Owing to our varied technical work in various Industrial, Private, Public, & Co-operative sectors, we have grown into reputed & reliable firm within a very short span.</p>
+            <p class="mb-4">We, <strong>Sharvari Electrical Pvt. Ltd.</strong> have great pleasure to introduce ourselves as an Established & Reputed Electrical Engineering organization in field of Supply, Erection, Testing & Commissioning of Turnkey Electricals Projects. We started our business in the field of EHV Electrical Transmission sector in 2009.</p>
+            <p>Sharvari Electrical Pvt. Ltd. is a firm founded & managed by young, well qualified & experienced engineers. Owing to our varied technical work in various Industrial, Private, Public, & Co-operative sectors, we have grown into reputed & reliable firm within a very short span.</p>
         `,
         image: displayData.aboutImage || "https://upload.wikimedia.org/wikipedia/commons/e/ea/Electric_transmission_power_tower.jpg"
     };
@@ -69,9 +69,9 @@ const About = () => {
         heading: "Our Strength",
         content: `
             <p class="mb-4">A good manpower acts as a catalyst in any company's success. Armed with efficient, qualified & experienced young minds, we are prepared to tackle every hurdle successfully. We have a deep belief in teamwork and if teamwork is a sport we have the sportsmanship to play it. It is just because of our teamwork that while working under tight time schedules we are able to complete projects without any cost or time overrun.</p>
-            <p class="mb-4">Idea is the food for innovation. We in M/s Sharvari Electricals come up with fresh ideas every moment. We implement these ideas to innovate new landmarks in the path of our success. We have a firm belief in Devotion, Dedication, Discipline, Hard work and Teamwork without which we think success can't be achieved. M/s Sharvari Electricals has drawn up ambitious plans for the future aimed at diversifying its operations.</p>
+            <p class="mb-4">Idea is the food for innovation. We in M/s Sharvari Electrical Pvt. Ltd. come up with fresh ideas every moment. We implement these ideas to innovate new landmarks in the path of our success. We have a firm belief in Devotion, Dedication, Discipline, Hard work and Teamwork without which we think success can't be achieved. M/s Sharvari Electrical Pvt. Ltd. has drawn up ambitious plans for the future aimed at diversifying its operations.</p>
             <p class="mb-4">Timely completion of Project is essence of every job, with 3 P in place (i.e. People, Planning & Performance) we meet project deadlines with breeze.</p>
-            <p>To sum up, Sharvari Electricals is just a 09 years young firm. It has done pretty well in a short time and in near future we can give new dimensions and definitions to the electric world.</p>
+            <p>To sum up, Sharvari Electrical Pvt. Ltd. is just a 09 years young firm. It has done pretty well in a short time and in near future we can give new dimensions and definitions to the electric world.</p>
         `,
         points: ["Experienced Workforce", "Timely Delivery", "Quality Assurance", "Safety First Approach"]
     };
@@ -108,7 +108,7 @@ const About = () => {
                 <div className="absolute bottom-0 left-0 w-96 h-96 bg-secondary-100 rounded-full blur-[100px] opacity-60"></div>
             </div>
 
-            {/* 1. About Sharvari Electricals Section */}
+            {/* 1. About Sharvari Electrical Pvt. Ltd. Section */}
             <section className="py-24 relative z-10">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-col lg:flex-row gap-16 items-center">
