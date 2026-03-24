@@ -145,7 +145,7 @@ const Projects = () => {
                                                                             {rowIndex + 1}
                                                                         </td>
                                                                         {category.columns.map((col, colIndex) => (
-                                                                            <td key={colIndex} className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-light">
+                                                                            <td key={colIndex} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
                                                                                 {row[col]}
                                                                             </td>
                                                                         ))}

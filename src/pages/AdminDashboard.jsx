@@ -45,6 +45,41 @@ const AdminDashboard = () => {
         setActiveTab(firstTab);
     }, [activePage]);
 
+    // Inactivity Auto-Logout Effect
+    useEffect(() => {
+        let timeoutId;
+        let isThrottled = false;
+        const autoLogoutTime = 10 * 60 * 1000; // 10 minutes in milliseconds
+
+        const startTimer = () => {
+            if (timeoutId) clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                toast.error("Logged out due to inactivity");
+                logout();
+            }, autoLogoutTime);
+        };
+
+        const resetTimer = () => {
+            if (!isThrottled) {
+                startTimer();
+                isThrottled = true;
+                setTimeout(() => isThrottled = false, 1000); // Throttle to 1 update per second
+            }
+        };
+
+        const events = ['mousemove', 'mousedown', 'keydown', 'scroll', 'touchstart'];
+        
+        events.forEach(event => window.addEventListener(event, resetTimer, { passive: true }));
+        
+        // Start the initial timer
+        startTimer();
+
+        return () => {
+            if (timeoutId) clearTimeout(timeoutId);
+            events.forEach(event => window.removeEventListener(event, resetTimer));
+        };
+    }, [logout]);
+
     const TABS = {
         home: [
             { id: "hero", label: "Hero Section", icon: <LayoutDashboard size={18} /> },
@@ -107,7 +142,10 @@ const AdminDashboard = () => {
                     projectCategories: [],
                     email: "",
                     phone: "",
-                    address: ""
+                    headOfficeAddress: "",
+                    corporateOfficeAddress: "",
+                    showHeadOfficeAddress: true,
+                    showCorporateOfficeAddress: true
                 };
 
                 if (pageId === "services") {
@@ -197,7 +235,7 @@ const AdminDashboard = () => {
             collectionName = "settings";
             docId = "general";
 
-            if (!pageData.email && !pageData.phone && !pageData.address) {
+            if (!pageData.email && !pageData.phone && !pageData.headOfficeAddress && !pageData.corporateOfficeAddress) {
                 toast.error("Please fill in at least one contact field.");
                 return;
             }
@@ -315,13 +353,44 @@ const AdminDashboard = () => {
                                                 onChange={(e) => setPageData({ ...pageData, phone: e.target.value })}
                                             />
                                         </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700">Address</label>
+                                        <div className="border border-gray-200 p-4 rounded bg-gray-50">
+                                            <div className="flex items-center justify-between mb-2">
+                                                <label className="block text-sm font-medium text-gray-700">Head Office Address</label>
+                                                <label className="flex items-center space-x-2 cursor-pointer">
+                                                    <input
+                                                        type="checkbox"
+                                                        className="form-checkbox h-4 w-4 text-primary-600 rounded focus:ring-primary-500"
+                                                        checked={pageData.showHeadOfficeAddress !== false}
+                                                        onChange={(e) => setPageData({ ...pageData, showHeadOfficeAddress: e.target.checked })}
+                                                    />
+                                                    <span className="text-sm font-medium text-gray-700">Enable</span>
+                                                </label>
+                                            </div>
                                             <textarea
                                                 rows={3}
-                                                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-primary-500"
-                                                value={pageData.address || ""}
-                                                onChange={(e) => setPageData({ ...pageData, address: e.target.value })}
+                                                className={`w-full px-3 py-2 border rounded focus:outline-none focus:ring-primary-500 ${pageData.showHeadOfficeAddress === false ? 'bg-gray-100 text-gray-400' : 'bg-white'}`}
+                                                value={pageData.headOfficeAddress || ""}
+                                                onChange={(e) => setPageData({ ...pageData, headOfficeAddress: e.target.value })}
+                                            />
+                                        </div>
+                                        <div className="border border-gray-200 p-4 rounded bg-gray-50">
+                                            <div className="flex items-center justify-between mb-2">
+                                                <label className="block text-sm font-medium text-gray-700">Corporate Office Address</label>
+                                                <label className="flex items-center space-x-2 cursor-pointer">
+                                                    <input
+                                                        type="checkbox"
+                                                        className="form-checkbox h-4 w-4 text-primary-600 rounded focus:ring-primary-500"
+                                                        checked={pageData.showCorporateOfficeAddress !== false}
+                                                        onChange={(e) => setPageData({ ...pageData, showCorporateOfficeAddress: e.target.checked })}
+                                                    />
+                                                    <span className="text-sm font-medium text-gray-700">Enable</span>
+                                                </label>
+                                            </div>
+                                            <textarea
+                                                rows={3}
+                                                className={`w-full px-3 py-2 border rounded focus:outline-none focus:ring-primary-500 ${pageData.showCorporateOfficeAddress === false ? 'bg-gray-100 text-gray-400' : 'bg-white'}`}
+                                                value={pageData.corporateOfficeAddress || ""}
+                                                onChange={(e) => setPageData({ ...pageData, corporateOfficeAddress: e.target.value })}
                                             />
                                         </div>
                                     </div>

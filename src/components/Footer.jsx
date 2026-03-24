@@ -20,7 +20,7 @@ const Footer = () => {
                             Sharvari Electrical Pvt. Ltd. is a trusted EPC company delivering reliable power infrastructure solutions including transmission lines, substations, electrification projects, and energy services. We are committed to quality, safety, and timely project execution.
                         </p>
                     </div>
-                    <div>
+                    <div className="md:justify-self-center">
                         <h3 className="text-xl font-bold mb-4">Quick Links</h3>
                         <ul className="space-y-2 text-gray-400">
                             <li><a href="/" className="hover:text-blue-400 transition-colors">Home</a></li>
@@ -31,12 +31,30 @@ const Footer = () => {
                             <li><a href="/contact" className="hover:text-blue-400 transition-colors">Contact</a></li>
                         </ul>
                     </div>
-                    <div>
+                    <div className="md:justify-self-center">
                         <h3 className="text-xl font-bold mb-4">Contact Info</h3>
                         <div className="text-gray-400">
                             {settings.email && <p>Email: {settings.email}</p>}
                             {settings.phone && <p>Phone: {settings.phone}</p>}
-                            {settings.address && <p className="mt-2">{settings.address}</p>}
+                            
+                            {settings.showHeadOfficeAddress !== false && settings.headOfficeAddress && (
+                                <div className="mt-4">
+                                    <p className="text-gray-300 font-semibold mb-1">Head Office Address</p>
+                                    <p className="text-sm whitespace-pre-line">{settings.headOfficeAddress}</p>
+                                </div>
+                            )}
+
+                            {settings.showCorporateOfficeAddress !== false && settings.corporateOfficeAddress && (
+                                <div className="mt-4">
+                                    <p className="text-gray-300 font-semibold mb-1">Corporate Office Address</p>
+                                    <p className="text-sm whitespace-pre-line">{settings.corporateOfficeAddress}</p>
+                                </div>
+                            )}
+
+                            {/* Fallback for old address if it still exists in the database unmigrated */}
+                            {(!settings.headOfficeAddress || settings.showHeadOfficeAddress === false) && (!settings.corporateOfficeAddress || settings.showCorporateOfficeAddress === false) && settings.address && (
+                                <p className="mt-4 text-sm">{settings.address}</p>
+                            )}
                         </div>
                     </div>
                 </div>

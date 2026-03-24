@@ -1,5 +1,6 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import Login from "../pages/Login";
 
 const PrivateRoute = () => {
     const { currentUser, userRole, loading } = useAuth();
@@ -14,7 +15,7 @@ const PrivateRoute = () => {
 
     // Check if user is logged in and has admin role
     if (!currentUser || userRole !== 'admin') {
-        return <Navigate to="/login" replace />;
+        return <Login />;
     }
 
     return <Outlet />;

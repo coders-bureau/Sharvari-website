@@ -52,7 +52,7 @@ Since there is no sign-up page for security reasons, you must create the admin u
    - Field: `role`, Type: `string`, Value: `admin`
 8. (Optional) Add field: `email`, Type: `string`, Value: `admin@example.com`
 
-**Now you can log in at `/login` with these credentials.**
+**Now you can log in at `/sys/secure/admin-dashboard` with these credentials.**
 
 ## 5. Deploying to Firebase Hosting
 1. Install Firebase CLI (if not installed):

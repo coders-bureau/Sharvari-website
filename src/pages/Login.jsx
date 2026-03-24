@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const { login } = useAuth();
-    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {
@@ -16,11 +14,10 @@ const Login = () => {
             setLoading(true);
             await login(email, password);
             toast.success("Logged in successfully!");
-            navigate("/sys/secure/admin-dashboard");
         } catch (error) {
             toast.error("Failed to log in: " + error.message);
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     return (

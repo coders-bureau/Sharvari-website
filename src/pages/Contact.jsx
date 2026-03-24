@@ -73,19 +73,6 @@ const Contact = () => {
                             </p>
 
                             <div className="space-y-6">
-                                {/* Address */}
-                                <div className="flex items-start gap-4 p-4 rounded-xl hover:bg-white/50 transition-colors duration-300">
-                                    <div className="bg-primary-50 w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm border border-primary-100">
-                                        <MapPin className="h-5 w-5 text-primary-600" />
-                                    </div>
-                                    <div>
-                                        <h3 className="text-lg font-bold text-gray-900 mb-1">Our Address</h3>
-                                        <p className="text-gray-600 text-sm leading-relaxed max-w-sm font-light">
-                                            {settings.address || "Plot No. 12, Gut No. 23, Opp. Hotel Sai Prasad, Beed Bypass Rd, Chhatrapati Sambhajinagar, Maharashtra 431005"}
-                                        </p>
-                                    </div>
-                                </div>
-
                                 {/* Email */}
                                 <div className="flex items-start gap-4 p-4 rounded-xl hover:bg-white/50 transition-colors duration-300">
                                     <div className="bg-primary-50 w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm border border-primary-100">
@@ -109,6 +96,42 @@ const Contact = () => {
                                         <p className="text-gray-600 text-sm font-light">
                                             {settings.phone || "+91 123 456 7890"}
                                         </p>
+                                    </div>
+                                </div>
+
+                                {/* Addresses */}
+                                <div className="flex items-start gap-4 p-4 rounded-xl hover:bg-white/50 transition-colors duration-300">
+                                    <div className="bg-primary-50 w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm border border-primary-100">
+                                        <MapPin className="h-5 w-5 text-primary-600" />
+                                    </div>
+                                    <div className="space-y-4">
+                                        {settings.showHeadOfficeAddress !== false && settings.headOfficeAddress && (
+                                            <div>
+                                                <h3 className="text-lg font-bold text-gray-900 mb-1">Head Office</h3>
+                                                <p className="text-gray-600 text-xs leading-relaxed max-w-sm font-light whitespace-pre-line">
+                                                    {settings.headOfficeAddress}
+                                                </p>
+                                            </div>
+                                        )}
+
+                                        {settings.showCorporateOfficeAddress !== false && settings.corporateOfficeAddress && (
+                                            <div>
+                                                <h3 className="text-lg font-bold text-gray-900 mb-1">Corporate Office</h3>
+                                                <p className="text-gray-600 text-xs leading-relaxed max-w-sm font-light whitespace-pre-line">
+                                                    {settings.corporateOfficeAddress}
+                                                </p>
+                                            </div>
+                                        )}
+
+                                        {/* Fallback if no specific addresses are set */}
+                                        {(!settings.headOfficeAddress || settings.showHeadOfficeAddress === false) && (!settings.corporateOfficeAddress || settings.showCorporateOfficeAddress === false) && (
+                                            <div>
+                                                <h3 className="text-lg font-bold text-gray-900 mb-1">Our Address</h3>
+                                                <p className="text-gray-600 text-xs leading-relaxed max-w-sm font-light whitespace-pre-line">
+                                                    {settings.address || "Plot No. 12, Gut No. 23, Opp. Hotel Sai Prasad, Beed Bypass Rd, Chhatrapati Sambhajinagar, Maharashtra 431005"}
+                                                </p>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>

@@ -12,17 +12,23 @@ export function AuthProvider({ children }) {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            setCurrentUser(user);
             if (user) {
-                // Fetch user role from Firestore
-                const userDoc = await getDoc(doc(db, "users", user.uid));
-                if (userDoc.exists()) {
-                    setUserRole(userDoc.data().role);
-                } else {
-                    // default role or handle case where user doc doesn't exist
+                setCurrentUser(user);
+                try {
+                    // Fetch user role from Firestore
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    if (userDoc.exists()) {
+                        setUserRole(userDoc.data().role);
+                    } else {
+                        // default role or handle case where user doc doesn't exist
+                        setUserRole(null);
+                    }
+                } catch (error) {
+                    console.error("Error fetching user role:", error);
                     setUserRole(null);
                 }
             } else {
+                setCurrentUser(null);
                 setUserRole(null);
             }
             setLoading(false);
@@ -31,12 +37,24 @@ export function AuthProvider({ children }) {
         return unsubscribe;
     }, []);
 
-    const login = (email, password) => {
-        return signInWithEmailAndPassword(auth, email, password);
+    const login = async (email, password) => {
+        setLoading(true);
+        try {
+            return await signInWithEmailAndPassword(auth, email, password);
+        } catch (error) {
+            setLoading(false);
+            throw error;
+        }
     };
 
-    const logout = () => {
-        return signOut(auth);
+    const logout = async () => {
+        setLoading(true);
+        try {
+            return await signOut(auth);
+        } catch (error) {
+            setLoading(false);
+            throw error;
+        }
     };
 
     const value = {
