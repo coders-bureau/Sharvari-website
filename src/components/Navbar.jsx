@@ -16,9 +16,11 @@ const Navbar = () => {
     // Handle scroll for Top Bar collapse
     useEffect(() => {
         const handleScroll = () => {
-            if (window.scrollY > 50) {
+            // Add hysteresis (a gap between show and hide thresholds) to prevent flickering
+            // when the layout height changes during the collapse animation.
+            if (window.scrollY > 60) {
                 setShowTopBar(false);
-            } else {
+            } else if (window.scrollY < 10) {
                 setShowTopBar(true);
             }
         };
