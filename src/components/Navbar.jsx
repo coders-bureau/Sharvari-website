@@ -40,7 +40,7 @@ const Navbar = () => {
 
     return (
         <nav className="bg-white shadow-md sticky top-0 z-50 font-sans transition-all duration-300">
-            {/* Top Bar - Collapsible */}
+            {/* Top Bar - Collapsible 
             <div className={`bg-gray-50 border-b border-gray-100 hidden md:flex items-center justify-center px-4 overflow-hidden transition-all duration-300 ease-in-out ${showTopBar ? "h-10 opacity-100" : "h-0 opacity-0"}`}>
                 <div className="max-w-7xl w-full mx-auto flex justify-between items-center text-xs text-gray-500">
                     <div className="flex items-center gap-6">
@@ -66,6 +66,7 @@ const Navbar = () => {
                     </div>
                 </div>
             </div>
+            */}
 
             {/* Main Navbar */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
