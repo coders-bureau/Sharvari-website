@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Loader2, Upload, X } from "lucide-react";
 import toast from "react-hot-toast";
 
-const ImageUploader = ({ currentImageUrl, onUploadComplete, folderPath = "uploads", multiple = false }) => {
+const ImageUploader = ({ currentImageUrl, onUploadComplete, folderPath = "uploads", multiple = false, acceptType = "image" }) => {
     const [progress, setProgress] = useState(0);
     const [uploading, setUploading] = useState(false);
     const [preview, setPreview] = useState(null);
@@ -22,14 +22,19 @@ const ImageUploader = ({ currentImageUrl, onUploadComplete, folderPath = "upload
         }
 
         // Validation
-        const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+        const imageTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+        const videoTypes = ['video/mp4', 'video/webm', 'video/ogg', 'video/quicktime'];
+        const validTypes = acceptType === "video" ? videoTypes : acceptType === "all" ? [...imageTypes, ...videoTypes] : imageTypes;
+
         for (const file of files) {
             if (!validTypes.includes(file.type)) {
-                toast.error(`Invalid file type: ${file.name}. Please upload JPG, PNG, or WebP.`);
+                toast.error(`Invalid file type: ${file.name}. Please upload ${acceptType === 'video' ? 'MP4/WEBM' : 'JPG/PNG/WebP'}.`);
                 return;
             }
-            if (file.size > 5 * 1024 * 1024) { // 5MB limit
-                toast.error(`File too large: ${file.name}. Max size is 5MB.`);
+            // 50MB limit for video or all, 5MB for image
+            const maxSize = (acceptType === "video" || acceptType === "all") ? 50 * 1024 * 1024 : 5 * 1024 * 1024;
+            if (file.size > maxSize) {
+                toast.error(`File too large: ${file.name}. Max size is ${maxSize / (1024 * 1024)}MB.`);
                 return;
             }
         }
@@ -56,8 +61,9 @@ const ImageUploader = ({ currentImageUrl, onUploadComplete, folderPath = "upload
                 formData.append("upload_preset", UPLOAD_PRESET);
                 formData.append("folder", folderPath);
 
+                const endpointType = acceptType === "video" ? "video" : acceptType === "all" ? "auto" : "image";
                 const response = await fetch(
-                    `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+                    `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/${endpointType}/upload`,
                     {
                         method: "POST",
                         body: formData,
@@ -93,13 +99,21 @@ const ImageUploader = ({ currentImageUrl, onUploadComplete, folderPath = "upload
         <div className="space-y-4">
             <div className="flex items-center space-x-4">
                 {!multiple && currentImageUrl && !preview && (
-                    <div className="relative w-32 h-32 border rounded overflow-hidden">
-                        <img src={currentImageUrl} alt="Current" className="w-full h-full object-cover" />
+                    <div className="relative w-32 h-32 border rounded overflow-hidden bg-gray-100 flex items-center justify-center">
+                        {currentImageUrl.match(/\.(mp4|webm|mov|ogg)$/i) || acceptType === "video" ? (
+                            <video src={currentImageUrl} className="w-full h-full object-cover" muted />
+                        ) : (
+                            <img src={currentImageUrl} alt="Current" className="w-full h-full object-cover" />
+                        )}
                     </div>
                 )}
                 {!multiple && preview && (
-                    <div className="relative w-32 h-32 border rounded overflow-hidden">
-                        <img src={preview} alt="Preview" className="w-full h-full object-cover opacity-80" />
+                    <div className="relative w-32 h-32 border rounded overflow-hidden bg-gray-100 flex items-center justify-center">
+                        {acceptType === "video" ? (
+                            <video src={preview} className="w-full h-full object-cover opacity-80" muted />
+                        ) : (
+                            <img src={preview} alt="Preview" className="w-full h-full object-cover opacity-80" />
+                        )}
                         {uploading && (
                             <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30">
                                 <Loader2 className="animate-spin text-white" />
@@ -122,7 +136,7 @@ const ImageUploader = ({ currentImageUrl, onUploadComplete, folderPath = "upload
                         type="file"
                         className="hidden"
                         onChange={handleFileChange}
-                        accept="image/*"
+                        accept={acceptType === "video" ? "video/*" : acceptType === "all" ? "image/*,video/*" : "image/*"}
                         multiple={multiple}
                         disabled={uploading}
                     />

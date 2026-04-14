@@ -58,11 +58,32 @@ const HeroSlideManager = ({ pageData, setPageData, activePage }) => {
                             </button>
                         </div>
                         <div className="flex flex-col md:flex-row gap-6 mt-6">
-                            {/* Image Preview/Upload */}
+                            {/* Media Preview/Upload */}
                             <div className="w-full md:w-1/3 shrink-0">
-                                <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Slide Image</label>
+                                <div className="flex items-center justify-between mb-2">
+                                    <label className="block text-xs font-semibold text-gray-500 uppercase">Slide Media</label>
+                                    <div className="flex space-x-1 border rounded p-0.5 bg-gray-50">
+                                        <button 
+                                            onClick={() => {
+                                                const newSlides = [...slides];
+                                                newSlides[index] = { ...newSlides[index], type: 'image' };
+                                                updateSlides(newSlides);
+                                            }}
+                                            className={`text-xs px-2 py-1 rounded ${slide.type !== 'video' ? 'bg-white shadow-sm text-primary-600 font-medium' : 'text-gray-500 hover:text-gray-700'}`}
+                                        >Image</button>
+                                        <button 
+                                            onClick={() => {
+                                                const newSlides = [...slides];
+                                                newSlides[index] = { ...newSlides[index], type: 'video' };
+                                                updateSlides(newSlides);
+                                            }}
+                                            className={`text-xs px-2 py-1 rounded ${slide.type === 'video' ? 'bg-white shadow-sm text-primary-600 font-medium' : 'text-gray-500 hover:text-gray-700'}`}
+                                        >Video</button>
+                                    </div>
+                                </div>
                                 <ImageUploader
                                     folderPath="uploads/home"
+                                    acceptType={slide.type === 'video' ? 'video' : 'image'}
                                     currentImageUrl={slide.image}
                                     onUploadComplete={(url) => {
                                         const newSlides = [...slides];

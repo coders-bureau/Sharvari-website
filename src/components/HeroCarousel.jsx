@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 const HeroCarousel = ({ slides, images, title, text }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [videoProgress, setVideoProgress] = useState(0);
+    const location = useLocation();
+    const isTransparentRoute = ["/", "/about"].includes(location.pathname);
 
     // Normalize input to a standard slide format
     // Priority: slides prop > images/title/text props
@@ -26,12 +30,25 @@ const HeroCarousel = ({ slides, images, title, text }) => {
     useEffect(() => {
         if (!hasSlides || carouselSlides.length <= 1) return;
 
-        const interval = setInterval(() => {
-            setCurrentIndex((prevIndex) => (prevIndex + 1) % carouselSlides.length);
-        }, 6000); // Change slide every 6 seconds
+        const currentSlide = carouselSlides[currentIndex];
+        const isVideo = currentSlide.type === 'video' || (currentSlide.image && currentSlide.image.match(/\.(mp4|webm|mov|ogg)$/i));
 
-        return () => clearInterval(interval);
-    }, [hasSlides, carouselSlides.length]);
+        // Reset video progress when slide changes
+        setVideoProgress(0);
+
+        // Only set auto-slide interval if it's an image
+        // Videos will trigger nextSlide on their onEnded event
+        let interval;
+        if (!isVideo) {
+            interval = setInterval(() => {
+                setCurrentIndex((prevIndex) => (prevIndex + 1) % carouselSlides.length);
+            }, 6000); // Change slide every 6 seconds for images
+        }
+
+        return () => {
+            if (interval) clearInterval(interval);
+        };
+    }, [hasSlides, carouselSlides.length, currentIndex, carouselSlides]);
 
     if (!hasSlides) {
         // Empty state
@@ -53,7 +70,7 @@ const HeroCarousel = ({ slides, images, title, text }) => {
     const currentSlide = carouselSlides[currentIndex];
 
     return (
-        <div className="relative bg-gray-900 text-white min-h-[600px] h-[calc(100vh-80px)] overflow-hidden group">
+        <div className={`relative bg-gray-900 text-white min-h-[600px] ${isTransparentRoute ? "h-screen" : "h-[calc(100vh-80px)]"} overflow-hidden group`}>
             {/* Background Images with Ken Burns Effect */}
             <AnimatePresence mode="popLayout" initial={false}>
                 <motion.div
@@ -64,15 +81,35 @@ const HeroCarousel = ({ slides, images, title, text }) => {
                     transition={{ duration: 1 }}
                     className="absolute inset-0 z-0"
                 >
-                    <motion.img
-                        src={currentSlide.image}
-                        alt={`Hero Slide ${currentIndex + 1}`}
-                        className="w-full h-full object-cover"
-                        // Ken Burns Effect: Alternate zoom direction for variety or just zoom in
-                        initial={{ scale: 1.1 }}
-                        animate={{ scale: 1 }}
-                        transition={{ duration: 8, ease: "linear" }}
-                    />
+                    {currentSlide.type === 'video' || (currentSlide.image && currentSlide.image.match(/\.(mp4|webm|mov|ogg)$/i)) ? (
+                        <motion.video
+                            key={`${currentIndex}-video`} // Force remount to ensure autoplay works on slide change
+                            src={currentSlide.image}
+                            autoPlay
+                            muted
+                            playsInline
+                            onEnded={nextSlide}
+                            onTimeUpdate={(e) => {
+                                if (e.target.duration) {
+                                    setVideoProgress((e.target.currentTime / e.target.duration) * 100);
+                                }
+                            }}
+                            className="w-full h-full object-cover"
+                            initial={{ scale: 1.1 }}
+                            animate={{ scale: 1 }}
+                            transition={{ duration: 8, ease: "linear" }}
+                        />
+                    ) : (
+                        <motion.img
+                            src={currentSlide.image}
+                            alt={`Hero Slide ${currentIndex + 1}`}
+                            className="w-full h-full object-cover"
+                            // Ken Burns Effect: Alternate zoom direction for variety or just zoom in
+                            initial={{ scale: 1.1 }}
+                            animate={{ scale: 1 }}
+                            transition={{ duration: 8, ease: "linear" }}
+                        />
+                    )}
                     {/* Enhanced Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
@@ -161,6 +198,19 @@ const HeroCarousel = ({ slides, images, title, text }) => {
                         ))}
                     </div>
                 </>
+            )}
+
+            {/* Video Completion Bar */}
+            {carouselSlides[currentIndex] && (carouselSlides[currentIndex].type === 'video' || (carouselSlides[currentIndex].image && carouselSlides[currentIndex].image.match(/\.(mp4|webm|mov|ogg)$/i))) && (
+                <div className="absolute bottom-0 left-0 w-full h-1.5 bg-black/40 z-30">
+                    <div 
+                        className="h-full bg-primary-500"
+                        style={{ 
+                            width: `${videoProgress}%`, 
+                            transition: videoProgress === 0 ? 'none' : 'width 300ms linear' 
+                        }}
+                    ></div>
+                </div>
             )}
         </div>
     );

@@ -9,23 +9,24 @@ import logo from "../assets/logo.png";
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [showTopBar, setShowTopBar] = useState(true);
+    const [isScrolled, setIsScrolled] = useState(false);
     const location = useLocation();
     const { settings } = useSiteSettings();
+    const isTransparentRoute = ["/", "/about"].includes(location.pathname);
 
-    // Handle scroll for Top Bar collapse
+    // Handle scroll for transparent overlay
     useEffect(() => {
         const handleScroll = () => {
-            // Add hysteresis (a gap between show and hide thresholds) to prevent flickering
-            // when the layout height changes during the collapse animation.
-            if (window.scrollY > 60) {
-                setShowTopBar(false);
-            } else if (window.scrollY < 10) {
-                setShowTopBar(true);
+            if (window.scrollY > 20) {
+                setIsScrolled(true);
+            } else {
+                setIsScrolled(false);
             }
         };
 
         window.addEventListener("scroll", handleScroll);
+        // initial check
+        handleScroll();
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
@@ -38,9 +39,15 @@ const Navbar = () => {
         { name: "Contact", path: "/contact" },
     ];
 
+    const isTransparent = isTransparentRoute && !isScrolled;
+
     return (
-        <nav className="bg-white shadow-md sticky top-0 z-50 font-sans transition-all duration-300">
-            {/* Top Bar - Collapsible 
+        <nav className={clsx(
+            "top-0 z-50 font-sans transition-all duration-300",
+            isTransparentRoute ? "fixed w-full" : "sticky",
+            !isTransparent ? "bg-white shadow-md" : "bg-transparent backdrop-blur-[1px]"
+        )}>
+            {/* Top Bar - Collapsible
             <div className={`bg-gray-50 border-b border-gray-100 hidden md:flex items-center justify-center px-4 overflow-hidden transition-all duration-300 ease-in-out ${showTopBar ? "h-10 opacity-100" : "h-0 opacity-0"}`}>
                 <div className="max-w-7xl w-full mx-auto flex justify-between items-center text-xs text-gray-500">
                     <div className="flex items-center gap-6">
@@ -74,10 +81,10 @@ const Navbar = () => {
                     {/* Logo */}
                     <div className="flex-shrink-0 flex items-center">
                         <Link to="/" className="flex items-center gap-2 md:gap-3">
-                            <img src={logo} alt="Sharvari Logo" className="h-10 md:h-14 w-auto" />
+                            <img src={logo} alt="Sharvari Logo" className={clsx("h-10 md:h-14 w-auto transition-all", isTransparent && "drop-shadow-md")} />
                             <div className="flex flex-col items-center">
-                                <span className="text-lg md:text-2xl font-bold text-primary-700 tracking-widest leading-none">SHARVARI ELECTRICALS</span>
-                                <span className="text-[0.5rem] md:text-[0.6rem] font-bold text-[#5A2283] tracking-[0.3em] uppercase mt-0.5">EPC COMPANY</span>
+                                <span className={clsx("text-lg md:text-2xl font-bold tracking-widest leading-none transition-colors", !isTransparent ? "text-primary-700" : "text-white drop-shadow-md")}>SHARVARI ELECTRICALS</span>
+                                <span className={clsx("text-[0.5rem] md:text-[0.6rem] font-bold tracking-[0.3em] uppercase mt-0.5 transition-colors", !isTransparent ? "text-[#5A2283]" : "text-white drop-shadow-md")}>EPC COMPANY</span>
                             </div>
                         </Link>
                     </div>
@@ -89,10 +96,10 @@ const Navbar = () => {
                                 key={link.name}
                                 to={link.path}
                                 className={clsx(
-                                    "text-base font-medium transition-colors hover:text-primary-600 flex items-center gap-1", // Increased size to text-base
-                                    location.pathname === link.path
-                                        ? "text-primary-600"
-                                        : "text-gray-600"
+                                    "text-base font-medium transition-colors flex items-center gap-1",
+                                    !isTransparent
+                                        ? (location.pathname === link.path ? "text-primary-600" : "text-gray-600 hover:text-primary-600")
+                                        : (location.pathname === link.path ? "text-white drop-shadow-md" : "text-white/90 hover:text-white drop-shadow-md")
                                 )}
                             >
                                 {link.name}
@@ -105,7 +112,10 @@ const Navbar = () => {
                         <div className="flex items-center">
                             <button
                                 onClick={() => setIsOpen(!isOpen)}
-                                className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-primary-600 hover:bg-gray-100 focus:outline-none"
+                                className={clsx(
+                                    "inline-flex items-center justify-center p-2 rounded-md focus:outline-none transition-colors",
+                                    !isTransparent ? "text-gray-700 hover:text-primary-600 hover:bg-gray-100" : "text-white hover:bg-white/20"
+                                )}
                             >
                                 {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
                             </button>
